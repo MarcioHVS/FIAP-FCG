@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Enums;
+using Isopoh.Cryptography.Argon2;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -10,6 +11,7 @@ namespace FCG.Domain.Entities
         public string Apelido { get; private set; }
         public string Email { get; private set; }
         public string Senha { get; private set; }
+        public string Salt { get; private set; }
         public Role Role { get; private set; }
 
         public ICollection<Pedido> Pedidos { get; set; }
@@ -17,13 +19,14 @@ namespace FCG.Domain.Entities
         //EF
         protected Usuario() { }
 
-        private Usuario(Guid id, string nome, string apelido, string email, string senha, Role role)
+        private Usuario(Guid id, string nome, string apelido, string email, string senhaHash, string salt, Role role)
         {
             Id = id;
             Nome = nome;
             Apelido = apelido;
             Email = email;
-            Senha = senha;
+            Senha = senhaHash;
+            Salt = salt;
             Role = role;
         }
 
@@ -35,7 +38,9 @@ namespace FCG.Domain.Entities
             if (!SenhaForte(senha))
                 throw new Exception("A senha deve conter pelo menos uma letra, um número e um caractere especial.");
 
-            return new Usuario(id ?? Guid.NewGuid(), nome, apelido, email, senha, role);
+            var (senhaHash, salt) = GerarHashSenha(senha);
+
+            return new Usuario(id ?? Guid.NewGuid(), nome, apelido, email, senhaHash, salt, role);
         }
 
         public static bool EmailValido(string email)
@@ -64,6 +69,25 @@ namespace FCG.Domain.Entities
             bool temEspecial = Regex.IsMatch(senha, @"[!@#$%^&*(),.?""{}|<>]");
 
             return temLetra && temNumero && temEspecial;
+        }
+
+        public void AlterarSenha(string novaSenha)
+        {
+            var (novoHash, novoSalt) = GerarHashSenha(novaSenha);
+            Senha = novoHash;
+            Salt = novoSalt;
+        }
+
+        public bool ValidarSenha(string senha)
+        {
+            return Argon2.Verify(Senha, senha + Salt);
+        }
+
+        private static (string hash, string salt) GerarHashSenha(string senha)
+        {
+            var salt = Guid.NewGuid().ToString();
+            var hash = Argon2.Hash(senha + salt);
+            return (hash, salt);
         }
     }
 }
