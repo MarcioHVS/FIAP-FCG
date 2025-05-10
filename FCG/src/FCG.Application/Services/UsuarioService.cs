@@ -9,10 +9,12 @@ namespace FCG.Application.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IJwtService _jwtService;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IJwtService jwtService)
         {
             _usuarioRepository = usuarioRepository;
+            _jwtService = jwtService;
         }
 
         public async Task<string> LoginAsync(LoginDto login)
@@ -26,7 +28,7 @@ namespace FCG.Application.Services
             if (!usuario.ValidarSenha(login.Senha))
                 throw new CredenciaisInvalidasException();
 
-            return "TOKEN-DE-TESTE";
+            return _jwtService.GerarToken(usuario.ToDto());
         }
 
         public async Task<UsuarioResponseDto> ObterUsuarioAsync(Guid usuarioId)
