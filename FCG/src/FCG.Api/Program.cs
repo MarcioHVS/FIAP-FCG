@@ -1,4 +1,5 @@
 using FCG.Api.Configurations;
+using MGO.Cliente.Api.Configurations;
 
 namespace FCG.Api
 {
@@ -26,6 +27,8 @@ namespace FCG.Api
             _builder.AddApiConfiguration();
 
             _builder.AddSwaggerConfiguration();
+
+            _builder.RegisterDependencies();
         }
 
         private static void ConfigureRequestsPipeline()
