@@ -37,6 +37,10 @@ namespace FCG.Infrastructure.Contexts
                 var senhaProperty = entry.Property(nameof(Usuario.Senha));
                 if (entry.State == EntityState.Modified && senhaProperty.CurrentValue is string senha && string.IsNullOrEmpty(senha))
                     senhaProperty.IsModified = false;
+
+                var saltProperty = entry.Property(nameof(Usuario.Salt));
+                if (entry.State == EntityState.Modified && saltProperty.CurrentValue is string salt && string.IsNullOrEmpty(salt))
+                    saltProperty.IsModified = false;
             }
 
             var salvo = await base.SaveChangesAsync(cancellationToken) > 0;
