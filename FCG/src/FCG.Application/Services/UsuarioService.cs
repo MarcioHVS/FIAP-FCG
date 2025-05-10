@@ -1,6 +1,7 @@
 ﻿using FCG.Application.DTOs;
 using FCG.Application.Interfaces;
 using FCG.Application.Mappers;
+using FCG.Domain.Exceptions;
 using FCG.Domain.Interfaces;
 
 namespace FCG.Application.Services
@@ -17,13 +18,13 @@ namespace FCG.Application.Services
         public async Task<string> LoginAsync(LoginDto login)
         {
             var usuario = await _usuarioRepository.ObterUsuarioPorApelidoAsync(login.Apelido)
-                ?? throw new Exception();
+                ?? throw new CredenciaisInvalidasException();
 
             if (!usuario.Ativo)
-                throw new Exception("Login não permitido: sua conta não está ativa no sistema");
+                throw new OperacaoInvalidaException("Login não permitido: sua conta não está ativa no sistema");
 
             if (!usuario.ValidarSenha(login.Senha))
-                throw new Exception();
+                throw new CredenciaisInvalidasException();
 
             return "TOKEN-DE-TESTE";
         }

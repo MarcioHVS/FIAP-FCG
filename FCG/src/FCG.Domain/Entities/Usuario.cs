@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Enums;
+using FCG.Domain.Exceptions;
 using Isopoh.Cryptography.Argon2;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -33,10 +34,10 @@ namespace FCG.Domain.Entities
         public static Usuario Criar(Guid? id, string nome, string apelido, string email, string senha, Role role)
         {
             if (!EmailValido(email))
-                throw new Exception("Endereço de e-mail inválido.");
+                throw new OperacaoInvalidaException("Endereço de e-mail inválido.");
 
             if (!SenhaForte(senha))
-                throw new Exception("A senha deve conter pelo menos uma letra, um número e um caractere especial.");
+                throw new OperacaoInvalidaException("A senha deve conter pelo menos uma letra, um número e um caractere especial.");
 
             var (senhaHash, salt) = GerarHashSenha(senha);
 

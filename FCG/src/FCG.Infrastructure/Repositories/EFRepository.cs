@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Entities;
+using FCG.Domain.Exceptions;
 using FCG.Domain.Interfaces;
 using FCG.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@ namespace FCG.Infrastructure.Repositories
             var entidadeBD = await ObterEntidadeAsync(entidade.Id);
 
             if (entidadeBD is null)
-                throw new Exception("Registro não encontrado");
+                throw new OperacaoInvalidaException("Registro não encontrado");
 
             if (entidadeBD.Ativo)
                 entidade.Ativar();
