@@ -54,7 +54,7 @@ Install-Package Microsoft.EntityFrameworkCore.Tools -Version 8.0.15
 ```
 
 #### Camada Tests
-- Framework de testes unitários: xunit, Moq, Microsoft.NET.Test.Sdk
+- Framework de testes unitários e BDD: xunit, Moq, Microsoft.NET.Test.Sdk, Reqnroll
 - Cobertura de código: coverlet.collector
 - Banco de testes em memória: Microsoft.EntityFrameworkCore.Sqlite
 ```
@@ -62,6 +62,9 @@ Install-Package coverlet.collector -Version 6.0.4
 Install-Package Microsoft.EntityFrameworkCore.Sqlite -Version 8.0.15
 Install-Package Microsoft.NET.Test.Sdk -Version 17.13.0
 Install-Package Moq -Version 4.20.72
+Install-Package Reqnroll -Version 2.4.1
+Install-Package Reqnroll.Tools.MsBuild.Generation -Version 2.4.1
+Install-Package Reqnroll.xUnit -Version 2.4.1
 Install-Package xunit -Version 2.9.3
 Install-Package xunit.runner.visualstudio -Version 3.1.0
 ```
@@ -89,8 +92,10 @@ FCG/
 │   ├──📂 Migrations/
 │   ├──📂 Repositories/
 │──📂 FCG.Tests/
+│   ├──📂 Features
 │   ├──📂 Fixtures
 │   ├──📂 IntegrationTests/
+│   ├──📂 StepDefinitions/
 │   ├──📂 UnitTests/
 ```
 #### 1. API Layer (Camada de API)
@@ -120,9 +125,12 @@ Responsável por interações externas, como banco de dados e serviços externos
 
 #### 5. Tests Layer (Camada de Testes)
 Responsável por validar o funcionamento correto da aplicação, garantindo estabilidade e qualidade do software.
-- Fixtures: Fornece objetos e configurações para testes automatizados.
-- UnitTests: Testam funcionalidades isoladas, garantindo que métodos individuais se comportem conforme esperado.
-- IntegrationTests: Validam a interação entre componentes e camadas do sistema, assegurando integração correta.
+- **FeatureFiles**: Contém os arquivos `.feature` escritos em Gherkin para descrever cenários de teste.
+- **Fixtures**: Fornece objetos e configurações para testes automatizados.
+- **UnitTests**: Testam funcionalidades isoladas, garantindo que métodos individuais se comportem conforme esperado.
+- **IntegrationTests**: Validam a interação entre componentes e camadas do sistema, assegurando integração correta.
+- **StepDefinitions**: Implementa os passos de testes BDD (Behavior-Driven Development) usando Reqnroll.
+- **Mocks**: Simula dependências externas e serviços para testes sem impactos reais no banco de dados.
 
 ## 🏛️ Entidades do Domínio
 A API gerencia as seguintes entidades:
@@ -198,13 +206,24 @@ Os testes estão organizados conforme a estrutura do projeto:
 
 ```
 FCG.Tests
-│── 📂 UnitTests
-│    │── 📄 JogoServiceTests.cs (Testes do serviço de jogos)
-│    │── 📄 PedidoServiceTests.cs (Testes do serviço de pedido)
-│    │── 📄 PromocaoServiceTests.cs (Testes do serviço de promoções)
-│    │── 📄 UsuarioServiceTests.cs (Testes do serviço de usuários)
+│── 📂 Dependencies
+│    │── 📂 Features
+│    │    │── 📄 Login.feature
+│    │    │── 📄 Pedido.feature
+│    │── 📂 Fixtures
+│    │    │── 📄 TestFixture.cs
 │── 📂 IntegrationTests
-│    │── 📄 PedidoServiceTests.cs (Testes do serviço de pedidos)
+│    │── 📂 ServicesTests
+│    │    │── 📄 PedidoServiceTests.cs (Testes do serviço de pedidos)
+│── 📂 StepDefinitions
+│    │── 📄 LoginSteps.cs
+│    │── 📄 PedidoSteps.cs
+│── 📂 UnitTests
+│    │── 📂 ServicesTests
+│    │    │── 📄 JogoServiceTests.cs (Testes do serviço de jogos)
+│    │    │── 📄 PedidoServiceTests.cs (Testes do serviço de pedido)
+│    │    │── 📄 PromocaoServiceTests.cs (Testes do serviço de promoções)
+│    │    │── 📄 UsuarioServiceTests.cs (Testes do serviço de usuários)
 ```
 Para rodar os testes, siga os passos:
 
@@ -232,6 +251,11 @@ dotnet test --filter Category=Unit
 #### ✅ Executar apenas testes de integração
 ```
 dotnet test --filter Category=Integration
+```
+
+#### ✅ Executar apenas testes de BDD
+```
+dotnet test --filter Category=BDD
 ```
 
 ## ✒️ Autor
