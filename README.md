@@ -1,4 +1,4 @@
-# FIAP Cloud Games (FCG)
+# 🎮 FIAP Cloud Games (FCG)
 ## _Plataforma de jogos digitais_
 
 O FIAP Cloud Games (FCG) é um projeto acadêmico que reúne conhecimentos adquiridos nas disciplinas onde o desafio envolve o desenvolvimento da plataforma FIAP Cloud Games (FCG), que permitirá a venda de jogos digitais e a gestão de servidores para partidas online.
