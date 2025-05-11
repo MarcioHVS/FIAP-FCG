@@ -124,7 +124,72 @@ Responsável por validar o funcionamento correto da aplicação, garantindo esta
 - UnitTests: Testam funcionalidades isoladas, garantindo que métodos individuais se comportem conforme esperado.
 - IntegrationTests: Validam a interação entre componentes e camadas do sistema, assegurando integração correta.
 
-## ⚙️ Executando os testes
+## 🏛️ Entidades do Domínio
+A API gerencia as seguintes entidades:
+
+### Usuário:
+Representa um jogador, contendo informações como nome, email e senha criptografada.
+
+### Jogo:
+Contém detalhes como título, gênero e valor.
+
+### Promoção:
+Cupons de promoção para descontos na compra dos jogos.
+
+### Pedido:
+Registra compras de jogos com seus respectivos valores.
+
+## ⚙️ Funcionalidades da Api
+A API expõe os seguintes endpoints:
+
+### Usuários
+
+| **Método** | **Endpoint** | **Descrição** |
+| ------ | ------ | ------ |
+| 🟩 **POST** | `/Usuarios/Login`  | Efetua a autenticação do usuário retornando o seu token de acesso |
+| 🔵 **GET** | `/Usuarios/ObterUsuario` | Obtém os dados de um determinado usuário pelo seu Id |
+| 🔵 **GET** | `/Usuarios/ObterUsuarios` | Obtém uma lista com todos os usuários cadastrados |
+| 🟩 **POST** | `/Usuarios/AdicionarUsuario` | Cria um novo cadastro de usuário |
+| 🟧 **PUT**  | `/Usuarios/AlterarUsuario` | Altera os dados do usuário |
+| 🟧 **PUT**  | `/Usuarios/AtivarrUsuario` | Ativa o usuário possibilitando a visualização dos seus dados e o seu acesso ao sistema |
+| 🟧 **PUT**  | `/Usuarios/DesativarrUsuario` | Desativa o usuário impossibilitando a visualização dos seus dados e o seu acesso ao sistema |
+
+### Jogos
+
+| **Método** | **Endpoint** | **Descrição** |
+| ------ | ------ | ------ |
+| 🔵 **GET** | `/Jogos/ObterJogo` | Obtém os dados de um determinado jogo pelo seu Id |
+| 🔵 **GET** | `/Jogos/ObterJogos` | Obtém uma lista com todos os jogos cadastrados |
+| 🟩 **POST** | `/Jogos/AdicionarJogo` | Cria um novo cadastro de jogo |
+| 🟧 **PUT**  | `/Jogos/AlterarUsuario` | Altera os dados do jogo |
+| 🟧 **PUT**  | `/Jogos/AtivarJogo` | Ativa o jogo possibilitando a sua utilização no sistema |
+| 🟧 **PUT**  | `/Jogos/DesativarJogo` | Desativa o jogo impossibilitando a sua utilização no sistema |
+
+
+### Promoções
+
+| **Método** | **Endpoint** | **Descrição** |
+| ------ | ------ | ------ |
+| 🔵 **GET** | `/Promocoes/ObterPromocao` | Obtém os dados de uma determinada promoção pelo seu Id |
+| 🔵 **GET** | `/Promocoes/ObterPromocoes` | Obtém uma lista com todas as promoções cadastradas |
+| 🟩 **POST** | `/Promocoes/AdicionarPromocao` | Cria um novo cadastro de promoção |
+| 🟧 **PUT**  | `/Promocoes/AlterarPromocao` | Altera os dados da promoção |
+| 🟧 **PUT**  | `/Promocoes/AtivarPromocao` | Ativa a promoção possibilitando a sua utilização no sistema |
+| 🟧 **PUT**  | `/Promocoes/DesativarPromocao` | Desativa a promoção impossibilitando a sua utilização no sistema |
+
+### Pedidos
+
+| **Método** | **Endpoint** | **Descrição** |
+| ------ | ------ | ------ |
+| 🔵 **GET** | `/Pedidos/ObterPedido` | Obtém os dados de um determinado pedido pelo seu Id |
+| 🔵 **GET** | `/Pedidos/ObterPedidos` | Obtém uma lista com todos os pedidos cadastrados |
+| 🟩 **POST** | `/Pedidos/AdicionarPedido` | Cria um novo cadastro de pedido |
+| 🟧 **PUT**  | `/Pedidos/AlterarPedido` | Altera os dados do pedido |
+| 🟧 **PUT**  | `/Pedidos/AtivarPedido` | Ativa o pedido possibilitando a sua utilização no sistema |
+| 🟧 **PUT**  | `/Pedidos/DesativarPedido` | Desativa o pedido impossibilitando a sua utilização no sistema |
+
+
+## 🚀 Executando os testes
 
 Para garantir a qualidade e a estabilidade do projeto, é essencial executar os testes automatizados. O projeto utiliza xUnit para testes e Moq para simulação de dependências.
 
